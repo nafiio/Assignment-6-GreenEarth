@@ -17,7 +17,7 @@ const loadTree = (id) => {
   // 1.sobaike dhore active class remove kore diye jake click kora hoiche take deu
 
   const catBtns = document.querySelectorAll(".cat-btn");
-  console.log(catBtns);
+  // console.log(catBtns);
   catBtns.forEach((btn) => btn.classList.remove("active"));
   // 2. sobaike dhore active class add kore deu
   const currentBtns = document.getElementById(`cat-btn-${id}`);
@@ -33,6 +33,9 @@ const loadModal = (id) => {
     .then((res) => res.json())
     .then((data) => displayModal(data.plants));
 };
+
+let cart = [];
+let total = 0;
 
 const displayCategories = (btns) => {
   //   console.log(btn);
@@ -66,20 +69,21 @@ const displayTree = (trees) => {
                   />
                 </figure>
                 <div class="card-body">
-                  <h2 onclick="loadModal(${tree.id})" class="card-title">${tree.name}</h2>
+                  <h2 onclick="loadModal(${tree.id})" class="card-title tree-name">${tree.name}</h2>
                   <p class="text-slate-500">
                     ${tree.description}
                   </p>
                   <div class="flex justify-between items-center gap-10">
                     <p
-                      class="btn max-w-30 bg-green-100 shadow-sm rounded-full text-green-700"
+                      class="btn max-w-30 bg-green-100 shadow-sm rounded-full text-green-700 "
                     >
                       ${tree.category}
                     </p>
-                    <p class="text-lg font-semibold">$<span>${tree.price}</span></p>
+                    <p class="text-lg font-semibold">$<span class="tree-price">${tree.price}</span></p>
                   </div>
                   <div class="card-actions">
                     <button
+                      onclick="addToCart(this)"
                       class="btn w-full text-white bg-green-700 rounded-full"
                     >
                       Buy Now
@@ -127,3 +131,64 @@ const displayModal = (modal) => {
 
 loadCategories();
 loadTree(1);
+
+const addToCart = (btn) => {
+  // console.log(btn);
+  const item = btn.parentNode.parentNode;
+  // console.log(item);
+  const treeName = item.querySelector(".tree-name").innerText;
+  const treePrice = Number(item.querySelector(".tree-price").innerText);
+  // console.log(foodName, foodPrice);
+
+  const selectedTree = {
+    treeName: treeName,
+    treePrice: treePrice,
+  };
+  cart.push(selectedTree);
+  total = total + treePrice;
+  displayCart(cart);
+  displayTotal(total);
+};
+
+const displayCart = (carts) => {
+  // console.log(carts);
+  const addCartContainer = document.getElementById("add-to-cart-container");
+  addCartContainer.innerHTML = "";
+  for (let cart of carts) {
+    // console.log(cart);
+    const newCart = document.createElement("div");
+    newCart.innerHTML = `
+     <div class="p-2 mt-5 bg-green-50 flex gap-3 shadow rounded-xl relative">
+                  <div class="flex-1">
+                    <h1 class="text-lg font-bold plant-name">
+                      ${cart.treeName}
+                    </h1>
+
+                    <div class="">
+                      <h2 class="font-semibold text-slate-400">
+                        ৳ <span class="plant-price">${cart.treePrice}</span> BDT
+                      </h2>
+                    </div>
+                  </div>
+                  <div
+                    onclick="removeCart(this)"
+                    class="w-6 h-6 flex justify-center items-center absolute top-5 right-2 text-slate-400"
+                  >
+                    <i class="fa-solid fa-x"></i>
+                  </div>
+                </div>
+    `;
+    addCartContainer.append(newCart);
+  }
+};
+
+const displayTotal = (val) => {
+  document.getElementById("cart-total").innerHTML = val;
+};
+
+const removeCart = (remove) => {
+  const removeItem = remove.parentNode;
+  const plantName = removeItem.querySelector(".plant-name").innerText;
+  const plantPrice = Number(removeItem.querySelector(".plant-price").innerText);
+  console.log(plantName, plantPrice);
+};
