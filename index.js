@@ -137,6 +137,7 @@ const addToCart = (btn) => {
   const item = btn.parentNode.parentNode;
   // console.log(item);
   const treeName = item.querySelector(".tree-name").innerText;
+  console.log(treeName);
   const treePrice = Number(item.querySelector(".tree-price").innerText);
   // console.log(foodName, foodPrice);
 
@@ -145,6 +146,7 @@ const addToCart = (btn) => {
     treePrice: treePrice,
   };
   cart.push(selectedTree);
+  console.log(cart);
   total = total + treePrice;
   displayCart(cart);
   displayTotal(total);
@@ -189,8 +191,13 @@ const displayTotal = (val) => {
 const removeCart = (remove) => {
   const removeItem = remove.parentNode;
   const plantName = removeItem.querySelector(".plant-name").innerText;
+  // console.log(plantName);
   const plantPrice = Number(removeItem.querySelector(".plant-price").innerText);
   console.log(plantName, plantPrice);
-  cart.filter((item) => item.treeName != plantName);
+  cart = cart.filter((item) => item.treeName != plantName);
+  total = 0;
+  cart.forEach((price) => (total += price.treePrice));
+
   displayCart(cart);
+  displayTotal(total);
 };
