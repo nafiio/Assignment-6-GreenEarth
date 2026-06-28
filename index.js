@@ -131,7 +131,7 @@ const displayModal = (modal) => {
 };
 
 loadCategories();
-loadTree(1);
+loadTree();
 
 const addToCart = (btn) => {
   const item = btn.parentNode.parentNode;
