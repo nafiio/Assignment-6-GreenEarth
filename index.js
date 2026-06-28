@@ -69,6 +69,7 @@ const displayTree = (trees) => {
                   />
                 </figure>
                 <div class="card-body">
+                  
                   <h2 onclick="loadModal(${tree.id})" class="card-title tree-name">${tree.name}</h2>
                   <p class="text-slate-500">
                     ${tree.description}
@@ -133,15 +134,13 @@ loadCategories();
 loadTree(1);
 
 const addToCart = (btn) => {
-  // console.log(btn);
   const item = btn.parentNode.parentNode;
-  // console.log(item);
   const treeName = item.querySelector(".tree-name").innerText;
-  console.log(treeName);
+
   const treePrice = Number(item.querySelector(".tree-price").innerText);
-  // console.log(foodName, foodPrice);
 
   const selectedTree = {
+    id: cart.length + 1,
     treeName: treeName,
     treePrice: treePrice,
   };
@@ -152,23 +151,24 @@ const addToCart = (btn) => {
   displayTotal(total);
 };
 
-const displayCart = (carts) => {
+const displayCart = (cards) => {
   // console.log(carts);
   const addCartContainer = document.getElementById("add-to-cart-container");
   addCartContainer.innerHTML = "";
-  for (let cart of carts) {
+  for (let card of cards) {
     // console.log(cart);
     const newCart = document.createElement("div");
     newCart.innerHTML = `
      <div class="p-2 mt-5 bg-green-50 flex gap-3 shadow rounded-xl relative">
                   <div class="flex-1">
+                  <span class="hidden tree-id">${card.id}</span>
                     <h1 class="text-lg font-bold plant-name">
-                      ${cart.treeName}
+                      ${card.treeName}
                     </h1>
 
                     <div class="">
                       <h2 class="font-semibold text-slate-400">
-                        ৳ <span class="plant-price">${cart.treePrice}</span> BDT
+                        ৳ <span class="plant-price">${card.treePrice}</span> BDT
                       </h2>
                     </div>
                   </div>
@@ -191,10 +191,12 @@ const displayTotal = (val) => {
 const removeCart = (remove) => {
   const removeItem = remove.parentNode;
   const plantName = removeItem.querySelector(".plant-name").innerText;
-  // console.log(plantName);
+  const treeId = Number(removeItem.querySelector(".tree-id").innerText);
+
+  console.log(treeId, plantName);
   const plantPrice = Number(removeItem.querySelector(".plant-price").innerText);
-  console.log(plantName, plantPrice);
-  cart = cart.filter((item) => item.treeName != plantName);
+
+  cart = cart.filter((item) => item.id != treeId);
   total = 0;
   cart.forEach((price) => (total += price.treePrice));
 
