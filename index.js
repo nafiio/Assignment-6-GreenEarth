@@ -191,4 +191,6 @@ const removeCart = (remove) => {
   const plantName = removeItem.querySelector(".plant-name").innerText;
   const plantPrice = Number(removeItem.querySelector(".plant-price").innerText);
   console.log(plantName, plantPrice);
+  cart.filter((item) => item.treeName != plantName);
+  displayCart(cart);
 };
