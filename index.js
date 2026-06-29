@@ -156,7 +156,6 @@ const displayCart = (cards) => {
   const addCartContainer = document.getElementById("add-to-cart-container");
   addCartContainer.innerHTML = "";
   for (let card of cards) {
-    // console.log(cart);
     const newCart = document.createElement("div");
     newCart.innerHTML = `
      <div class="p-2 mt-5 bg-green-50 flex gap-3 shadow rounded-xl relative">
